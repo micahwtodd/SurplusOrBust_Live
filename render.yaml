@@ -1,0 +1,13 @@
+# Render Blueprint: in Render, New -> Blueprint, then pick this repo.
+# One instance only: game sessions are kept in this process's memory.
+services:
+  - type: web
+    name: surplus-or-bust
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false # Render asks for the value at setup; it is never stored in the repo
